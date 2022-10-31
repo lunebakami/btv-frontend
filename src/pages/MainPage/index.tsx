@@ -28,7 +28,7 @@ type Props = {
 }
 
 const MainPage: React.FC<Props> = (props: Props) => {
-  const res = useFragment(
+  const data = useFragment(
     graphql`
       fragment MainPage_query on Query
       @refetchable(queryName: "MainPageQuery") {
@@ -42,13 +42,11 @@ const MainPage: React.FC<Props> = (props: Props) => {
     props.query
   )
 
-  console.log(res)
-
   return (
     <Container>
       <h3>Add your user</h3>
       <FormComponent />
-      <Table dataSource={res.data} columns={columns} />
+      <Table dataSource={data} columns={columns} />
     </Container>
   )
 }
