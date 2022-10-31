@@ -1,17 +1,30 @@
+import { Suspense } from 'react'
+import { graphql, useLazyLoadQuery } from 'react-relay'
 import { createBrowserRouter, RouterProvider, Route } from 'react-router-dom'
 import MainPage from './pages/MainPage'
 
 function App() {
+  const query = useLazyLoadQuery(
+    graphql`
+      query AppQuery {
+        ...MainPage_query
+      }
+    `,
+    {}
+  )
+
   const router = createBrowserRouter([
     {
       path: '/',
-      element: <MainPage />,
+      element: <MainPage query={query} />,
     },
   ])
 
   return (
     <div className="App">
-      <RouterProvider router={router} />
+      <Suspense fallback={<h2>Loading...</h2>}>
+        <RouterProvider router={router} />
+      </Suspense>
     </div>
   )
 }
