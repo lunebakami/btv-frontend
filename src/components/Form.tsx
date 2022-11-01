@@ -1,14 +1,39 @@
-import { Button, Form, Input } from 'antd'
+import { Button, Form, Input, notification } from 'antd'
 import React from 'react'
-// import { Container } from './styles';
+import { graphql, useMutation } from 'react-relay'
 
 const FormComponent: React.FC = () => {
-  const onFinish = (values: any) => {
-    console.log('Success:', values)
+  const mutation = graphql`
+    mutation FormCreateUserMutation($name: String!, $email: String!) {
+      createUser(input: { name: $name, email: $email }) {
+        name
+        email
+      }
+    }
+  `
+
+  const [commit] = useMutation(mutation)
+
+  const handleCreateUser = (name: string, email: string) => {
+    const config = {
+      variables: {
+        name,
+        email,
+      },
+    }
+
+    commit(config)
+  }
+
+  const onFinish = (data: any) => {
+    handleCreateUser(data.name, data.email)
   }
 
   const onFinishFailed = (errorInfo: any) => {
-    console.log('Failed:', errorInfo)
+    notification.error({
+      message: 'Error',
+      description: errorInfo,
+    })
   }
 
   return (

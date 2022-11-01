@@ -7,11 +7,6 @@ import { graphql, useFragment } from 'react-relay'
 
 const columns = [
   {
-    title: 'ID',
-    dataIndex: 'id',
-    key: 'id',
-  },
-  {
     title: 'Name',
     dataIndex: 'name',
     key: 'name',
@@ -28,7 +23,7 @@ type Props = {
 }
 
 const MainPage: React.FC<Props> = (props: Props) => {
-  const data = useFragment(
+  const result = useFragment(
     graphql`
       fragment MainPage_query on Query
       @refetchable(queryName: "MainPageQuery") {
@@ -46,7 +41,7 @@ const MainPage: React.FC<Props> = (props: Props) => {
     <Container>
       <h3>Add your user</h3>
       <FormComponent />
-      <Table dataSource={data} columns={columns} />
+      <Table dataSource={result.getUsers} columns={columns} />
     </Container>
   )
 }
