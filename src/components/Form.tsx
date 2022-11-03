@@ -27,6 +27,11 @@ const FormComponent: React.FC = () => {
 
   const onFinish = (data: any) => {
     handleCreateUser(data.name, data.email)
+
+    notification.success({
+      message: 'User added!',
+      description: 'User successfuly added, please update your page!',
+    })
   }
 
   const onFinishFailed = (errorInfo: any) => {
